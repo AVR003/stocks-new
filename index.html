@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Advisor Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Portfolio Pro</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="portfolio">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="#" class="nav-item" data-section="chat">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="#" class="nav-item" data-section="suggestions">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Suggestions</span>
+                </a>
+            </nav>
+            <div class="user-section">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span id="usernameDisplay">Guest</span>
+                        <div class="user-actions">
+                            <button id="loginBtn" class="btn-primary">Login</button>
+                            <button id="logoutBtn" class="btn-secondary" style="display:none;">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="dashboard-grid">
+                    <div class="card stock-search">
+                        <h2>Stock Search</h2>
+                        <div class="search-container">
+                            <input type="text" id="stockSearchInput" placeholder="Enter stock symbol (e.g., AAPL)" class="search-input">
+                            <button id="searchStockBtn" onclick="searchStock()" class="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="stockSearchResults" class="stock-results"></div>
+                    </div>
+                    <div class="card portfolio-summary">
+                        <h2>Portfolio Summary</h2>
+                        <div id="portfolioDisplay" class="portfolio-stats">
+                            <!-- Portfolio stats will be inserted here -->
+                        </div>
+                    </div>
+                    <div class="card portfolio-performance">
+                        <h2>Portfolio Performance</h2>
+                        <div class="graph-container">
+                            <canvas id="portfolioChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card market-overview">
+                        <h2>Market Overview</h2>
+                        <div class="market-stats">
+                            <div class="market-indicator">
+                                <i class="fas fa-arrow-up"></i>
+                                <span class="indicator-value" id="sp500Value">Loading...</span>
+                            </div>
+                            <div class="market-indicator">
+                                <i class="fas fa-arrow-up"></i>
+                                <span class="indicator-value" id="nasdaqValue">Loading...</span>
+                            </div>
+                            <div class="market-indicator">
+                                <i class="fas fa-arrow-up"></i>
+                                <span class="indicator-value" id="dowValue">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card video-section">
+                        <h2>Market Insights</h2>
+                        <div class="video-container">
+                            <div class="placeholder-content">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>Market insights coming soon...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card recent-activity">
+                        <h2>Recent Activity</h2>
+                        <div class="activity-list" id="activityList">
+                            <!-- Activity list will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat Section -->
+            <section id="chat" class="section">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2>Portfolio Advisor Chat</h2>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will appear here -->
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="userInput" placeholder="Ask about your portfolio...">
+                        <button id="sendBtn" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="section">
+                <div class="portfolio-container">
+                    <div class="portfolio-header">
+                        <h2>Your Portfolio</h2>
+                        <button class="btn-primary" id="addStockBtn">
+                            <i class="fas fa-plus"></i> Add Stock
+                        </button>
+                    </div>
+                    <div class="portfolio-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Name</th>
+                                    <th>Sector</th>
+                                    <th>Shares</th>
+                                    <th>Avg Price</th>
+                                    <th>Total Value</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="portfolioTableBody">
+                                <!-- Portfolio rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section id="suggestions" class="section">
+                <div class="suggestions-container">
+                    <h2>Investment Suggestions</h2>
+                    <div class="suggestions-grid" id="suggestionsDisplay">
+                        <!-- Suggestions will be inserted here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Portfolio Advisor Pro</h3>
+                <p>Your trusted partner in investment management</p>
+            </div>
+            <div class="footer-section">
+                <button class="btn-secondary" id="locationBtn">
+                    <i class="fas fa-map-marker-alt"></i> Headquarters Location
+                </button>
+            </div>
+            <div class="footer-section">
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Portfolio Advisor Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="authForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="authUsername">Username</label>
+                        <input type="text" id="authUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="authPassword">Password</label>
+                        <input type="password" id="authPassword" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="loginSubmit" class="btn-primary">Login</button>
+                        <button type="button" id="registerBtn" class="btn-secondary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Stock Modal -->
+    <div id="addStockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Stock</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addStockForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="stockSymbol">Stock Symbol</label>
+                        <input type="text" id="stockSymbol" required placeholder="e.g., AAPL">
+                    </div>
+                    <div class="form-group">
+                        <label for="stockName">Company Name</label>
+                        <input type="text" id="stockName" required placeholder="e.g., Apple Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="stockShares">Number of Shares</label>
+                        <input type="number" id="stockShares" required min="1" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="stockPrice">Average Price per Share</label>
+                        <input type="number" id="stockPrice" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="stockSector">Sector</label>
+                        <select id="stockSector" required>
+                            <option value="">Select a sector</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Financial">Financial</option>
+                            <option value="Consumer Cyclical">Consumer Cyclical</option>
+                            <option value="Communication Services">Communication Services</option>
+                            <option value="Industrial">Industrial</option>
+                            <option value="Energy">Energy</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Consumer Defensive">Consumer Defensive</option>
+                            <option value="Materials">Materials</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Add Stock</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Settings Modal -->
+    <div id="portfolioSettingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Portfolio Settings</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="portfolioSettingsForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="riskTolerance">Risk Tolerance</label>
+                        <select id="riskTolerance" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="investmentGoal">Investment Goal</label>
+                        <select id="investmentGoal" required>
+                            <option value="income">Income</option>
+                            <option value="balanced" selected>Balanced</option>
+                            <option value="growth">Growth</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div id="locationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Our Location</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="location-info">
+                    <div class="address">
+                        <h3>Pillai College of Engineering</h3>
+                        <p>Dr. K. M. Vasudevan Pillai Campus</p>
+                        <p>Plot No. 10, Sector 16, New Panvel</p>
+                        <p>Navi Mumbai, Maharashtra 410206</p>
+                    </div>
+                    <div class="contact">
+                        <h3>Contact Information</h3>
+                        <p><i class="fas fa-phone"></i> +91 22 2745 5770</p>
+                        <p><i class="fas fa-envelope"></i> info@pillai.edu</p>
+                        <p><i class="fas fa-globe"></i> www.pillai.edu</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.805935527518!2d73.110407!3d19.017455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7e9d3679205dd%3A0xc7d2bfff4de3ad01!2sPillai%20College%20of%20Engineering%2C%20New%20Panvel!5e0!3m2!1sen!2sin!4v1709654321!5m2!1sen!2sin"
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Chart.js before our main script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
